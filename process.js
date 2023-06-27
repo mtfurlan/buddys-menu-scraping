@@ -101,6 +101,7 @@ console.log('    <h1>Buddys Location Menu Comparison</h1>');
 console.log('    <p>Different Buddy\'s locations have different menu items available.</p>');
 console.log('    <p>I tried my best to consolodate things like the "Burgers & Sandwiches" and "Sandwiches & Burgers".</p>');
 console.log('    <p>this output was generated at ' + toRFC3339String(new Date()) + ', though the data may be a little older.</p>');
+console.log('    <p>see <a href="https://github.com/mtfurlan/buddys-menu-scraping">https://github.com/mtfurlan/buddys-menu-scraping</a> for details on how this was generated.</p>');
 console.log('</header>');
 for(const catName in products) {
     let category = products[catName];
