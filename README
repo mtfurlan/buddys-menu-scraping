@@ -2,6 +2,9 @@ Buddy's has different menu stuff at different locations.
 This lists all menu items and which locations they are at, sorted by most unique
 
 fetch.sh fetches json menus for everything in the file locations
+locations is populated manually from the "order carry out" buttons generated for
+each location on https://www.buddyspizza.com/order-buddys
 
-process.js outputs an html file saying what is where
-It has a bunch of hardcoded rules to deal with things like them misspelling Mozzarella or just using different names for the same things.
+process.js outputs html to stdout file showing what items are where
+It has a bunch of hardcoded rules to deal with things like them misspelling
+Mozzarella or just using different names for the same things.
