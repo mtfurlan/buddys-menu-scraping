@@ -65,6 +65,23 @@ let processProducts = (data) => {
     })
 }
 
+function toRFC3339String(date) {
+  var tzo = -date.getTimezoneOffset(),
+      dif = tzo >= 0 ? '+' : '-',
+      pad = function(num) {
+          return (num < 10 ? '0' : '') + num;
+      };
+
+  return date.getFullYear() +
+      '-' + pad(date.getMonth() + 1) +
+      '-' + pad(date.getDate()) +
+      ' ' + pad(date.getHours()) +
+      ':' + pad(date.getMinutes()) +
+      ':' + pad(date.getSeconds()) +
+      dif + pad(Math.floor(Math.abs(tzo) / 60)) +
+      ':' + pad(Math.abs(tzo) % 60);
+}
+
 let files = fs.readdirSync(dataDir)
 files.forEach(file => {
     let rawdata = fs.readFileSync("./data/" + file);
@@ -79,6 +96,12 @@ files.forEach(file => {
 
 //*
 console.log('<html><head><title>buddy stuff</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"></head><body>');
+console.log('<header>');
+console.log('    <h1>Buddys Location Menu Comparison</h1>');
+console.log('    <p>Different Buddy\'s locations have different menu items available.</p>');
+console.log('    <p>I tried my best to consolodate things like the "Burgers & Sandwiches" and "Sandwiches & Burgers".</p>');
+console.log('    <p>this output was generated at ' + toRFC3339String(new Date()) + ', though the data may be a little older.</p>');
+console.log('</header>');
 for(const catName in products) {
     let category = products[catName];
     console.log(`<h2>${catName}</h2>`);
