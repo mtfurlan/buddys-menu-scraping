@@ -118,11 +118,11 @@ for(const catName in products) {
             let prodLocStatus = "???";
             let tdClass="";
             if(category[productName].sells.includes(loc)) {
-                prodLocStatus = "yes";
+                prodLocStatus = "☑ yes";
                 tdClass="table-success";
             }
             if(category[productName].missing.includes(loc)) {
-                prodLocStatus = "no";
+                prodLocStatus = "⚠ no";
                 tdClass="table-danger";
             }
 
