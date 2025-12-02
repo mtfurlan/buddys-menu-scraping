@@ -112,7 +112,7 @@ fetch('https://order.buddyspizza.com/api/vendors/', {
 //});
 
 //*
-console.log('<html><head><title>buddy stuff</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"></head><body>');
+console.log('<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>buddy stuff</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"></head><body>');
 console.log('<header>');
 console.log('    <h1>Buddys Location Menu Comparison</h1>');
 console.log('    <p>Different Buddy\'s locations have different menu items available.</p>');
