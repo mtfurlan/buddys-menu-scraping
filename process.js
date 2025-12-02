@@ -1,13 +1,10 @@
 #!/usr/bin/env nodejs
 'use strict';
 
-const fs = require('fs');
-
-const dataDir = './data/';
 
 
-let locations = [];
 let products = {};
+let locArr = []
 
 let lookupProductID = (data, productID) => {
     return data.products.find((product) => {
@@ -15,9 +12,6 @@ let lookupProductID = (data, productID) => {
     });
 }
 
-let processLocations = (data) => {
-    locations.push(data.vendor.name);
-}
 
 let processProducts = (data) => {
     let locationName = data.vendor.name;
@@ -55,7 +49,7 @@ let processProducts = (data) => {
             productName = productName.replace(/Mozarella/, 'Mozzarella');
             productName = productName.replace(/^Steak Hoagie$/, 'Grilled Steak Hoagie'); //TODO: verify
             if(!products[categoryName][productName]) {
-                products[categoryName][productName] = {sells: [], missing: locations};
+                products[categoryName][productName] = {sells: [], missing: locArr};
             }
             products[categoryName][productName].sells.push(locationName);
             products[categoryName][productName].missing = products[categoryName][productName].missing.filter(loc => loc != locationName);
@@ -82,17 +76,42 @@ function toRFC3339String(date) {
       ':' + pad(Math.abs(tzo) % 60);
 }
 
-let files = fs.readdirSync(dataDir)
-files.forEach(file => {
-    let rawdata = fs.readFileSync("./data/" + file);
-    let data = JSON.parse(rawdata);
-    processLocations(data);
-});
-files.forEach(file => {
-    let rawdata = fs.readFileSync("./data/" + file);
-    let data = JSON.parse(rawdata);
-    processProducts(data);
-});
+fetch('https://order.buddyspizza.com/api/vendors/', {
+  headers: {
+    'x-olo-request': '1',
+    'user-agent': 'scraper for menu comparison: https://buddys.technicallycompetent.com/',
+    'accept': 'application/json'
+  }
+})
+    .then((response) => response.json())
+.then((data) => {
+
+    let locations = {};
+    data.forEach(loc => {
+        locations[loc.slug] = loc.name;
+        locArr.push(loc.name);
+    });
+    return locations;
+})
+.then(async (locations) => {
+    console.log(locations);
+
+    for(const [slug, name] of Object.entries(locations)) {
+        let locData = await fetch(`https://order.buddyspizza.com/api/vendors/${slug}`, {
+            headers: {
+                'x-olo-request': '1',
+                'user-agent': 'scraper for menu comparison: https://buddys.technicallycompetent.com/',
+                'accept': 'application/json'
+            }
+        });
+        let locJson = await locData.json();
+        processProducts(locJson);
+    }
+})
+.then(() => {
+
+
+//});
 
 //*
 console.log('<html><head><title>buddy stuff</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"></head><body>');
@@ -108,13 +127,13 @@ for(const catName in products) {
     console.log(`<h2>${catName}</h2>`);
     console.log('<table class="table table-striped"><tr>');
     console.log('<th scope="col">product</th>');
-    locations.forEach((loc) => {
+    locArr.forEach((loc) => {
         console.log(`<th scope="col">${loc}</th>`);
     });
     console.log("</tr>");
     for(const productName in category) {
         console.log(`<tr><th scope="row">${productName}</th>`);
-        locations.forEach((loc) => {
+        locArr.forEach((loc) => {
             let prodLocStatus = "???";
             let tdClass="";
             if(category[productName].sells.includes(loc)) {
@@ -150,3 +169,4 @@ console.log(JSON.stringify(products));
 //        }
 //    }
 //}
+});
