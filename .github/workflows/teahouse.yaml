@@ -35,5 +35,5 @@ jobs:
       - name: Upload
         uses: teahouse-hosting/upload@trunk
         with:
-          domain: test.downloadacar.com
+          domain: buddys.technicallycompetent.com
           root: dist
