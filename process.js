@@ -94,8 +94,6 @@ fetch('https://order.buddyspizza.com/api/vendors/', {
     return locations;
 })
 .then(async (locations) => {
-    console.log(locations);
-
     for(const [slug, name] of Object.entries(locations)) {
         let locData = await fetch(`https://order.buddyspizza.com/api/vendors/${slug}`, {
             headers: {
